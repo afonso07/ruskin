@@ -37,6 +37,7 @@ def generate_analysis_prompt(imageURI: str) -> str | None:
         max_tokens=500,
     )
     response_text = response.choices[0].message.content
+
     return response_text
 
 

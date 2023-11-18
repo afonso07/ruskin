@@ -5,6 +5,8 @@ import React, { useCallback } from "react";
 import Image from "next/image";
 import { useState } from "react";
 import { PaintBrushIcon, ArrowLeftIcon } from "@heroicons/react/24/solid";
+import ReactAudioPlayer from "react-audio-player";
+const RUSKIN_API_ENDPOINT = "http://localhost:8080/ruskin";
 
 export const Spinner = () => {
   return (
@@ -112,23 +114,32 @@ export const ImageGroupWrapper = ({
 export const Canvas = () => {
   const [currentIndex, setIndex] = useState<number | null>(null);
   const [analysisText, setAnalysisText] = useState<string>("");
-  const [selectedImageBase64, setSelectedImageBase64] = useState<string>("");
+  const [selectedImageURI, setSelectedImageURI] = useState<string>("");
+  const [audioURL, setAudioURL] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const sendImageDetails = useCallback(async () => {
-    if (selectedImageBase64 === "") return;
+    if (selectedImageURI === "") return;
 
-    const response = await fetch("/api/analyze", {
+    const response = await fetch(RUSKIN_API_ENDPOINT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Expose-Headers": "X-Metadata",
       },
-      body: JSON.stringify({ image: selectedImageBase64 }),
+
+      body: JSON.stringify({ imageURI: selectedImageURI }),
     });
-    const data = await response.json();
-    setAnalysisText(data.text);
+    const data = await response.blob();
+    const url = URL.createObjectURL(data);
+    const metadataBuffer = Buffer.from(
+      response.headers.get("x-metadata") || "",
+      "base64"
+    ).toString("utf-8");
+    setAudioURL(url);
+    setAnalysisText(metadataBuffer);
     setLoading(false);
-  }, [selectedImageBase64]);
+  }, [selectedImageURI]);
 
   return (
     <div className="flex w-full absolute top-0 p-4 max-h-screen h-screen overflow-scroll gap-6">
@@ -159,17 +170,21 @@ export const Canvas = () => {
                     var ctx = canvas.getContext("2d");
                     ctx?.drawImage(img.currentTarget, 0, 0);
                     var dataURL = canvas.toDataURL("image/png");
-                    const newUrl = dataURL.replace(
-                      /^data:image\/(png|jpg);base64,/,
-                      ""
-                    );
 
-                    setSelectedImageBase64(newUrl);
+                    setSelectedImageURI(dataURL);
                   }}
                 />
 
                 <div className="flex absolute bottom-2 right-2">
-                  <div className="bg-[#629ac8] text-white drop-shadow opacity-98 rounded p-2 justify-center items-center flex mt-4 text-xl w-fit">
+                  <div
+                    className="bg-[#629ac8] text-white drop-shadow opacity-98 rounded p-2 justify-center items-center flex mt-4 text-xl w-fit"
+                    onClick={() => {
+                      if (!loading) {
+                        setLoading(true);
+                        sendImageDetails();
+                      }
+                    }}
+                  >
                     {loading ? (
                       <Spinner />
                     ) : (
@@ -202,8 +217,9 @@ export const Canvas = () => {
             </div>
           </div>
         ) : (
-          <div className="w-full w-2/5 xl:w-2/3 justify-center mt-20 flex text-base">
-            {analysisText}
+          <div className="w-full w-2/5 xl:w-2/3 items-center mt-20 flex text-base  flex-col gap-10">
+            <div>{analysisText}</div>
+            {audioURL && <ReactAudioPlayer src={audioURL} autoPlay controls />}
           </div>
         )}
       </div>

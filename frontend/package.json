@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
+    "axios": "^1.6.2",
     "next": "14.0.3",
     "react": "^18",
+    "react-audio-player": "^0.17.0",
     "react-dom": "^18"
   },
   "devDependencies": {
