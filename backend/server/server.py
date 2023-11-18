@@ -23,17 +23,14 @@ async def create_upload_file(file: UploadFile = File(...)):
             if gpt_analysis is None:
                 raise HTTPException(status_code=500, detail="GPT-4 returned no text")
 
-          
-
-            # TODO: Perform any desired image processing
-            # ...
-
-            # TODO: Convert image to audio and save as MP3
-            # For demonstration, just generating empty MP3-like content
-            audio_data = b"ID3"  # Placeholder for actual MP3 audio binary
+            audio = generate(
+                text=gpt_analysis,
+                voice=os.getenv("VOICE_ID"),
+                model="eleven_turbo_v2",
+            )
 
             # Create a response stream
-            return StreamingResponse(io.BytesIO(audio_data), media_type="audio/mpeg")
+            return StreamingResponse(io.BytesIO(audio), media_type="audio/mpeg")
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
     else:
