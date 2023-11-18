@@ -9,7 +9,7 @@ from elevenlabs import generate, play  # type: ignore
 client = OpenAI()
 
 
-def generate_image_prompt(base64_image: str) -> list[dict[str, Any]]:
+def generate_image_prompt(imageURI: str) -> list[dict[str, Any]]:
     return [
         {
             "role": "user",
@@ -17,14 +17,14 @@ def generate_image_prompt(base64_image: str) -> list[dict[str, Any]]:
                 {"type": "text", "text": "Describe this painting."},
                 {
                     "type": "image_url",
-                    "image_url": f"data:image/jpeg;base64,{base64_image}",
+                    "image_url": imageURI,
                 },
             ],
         },
     ]
 
 
-def generate_analysis_prompt(base64_image: str) -> str | None:
+def generate_analysis_prompt(imageURI: str) -> str | None:
     response = client.chat.completions.create(
         model="gpt-4-vision-preview",
         messages=[
@@ -33,7 +33,7 @@ def generate_analysis_prompt(base64_image: str) -> str | None:
                 "content": critique_context,
             },
         ]
-        + generate_image_prompt(base64_image),
+        + generate_image_prompt(imageURI),
         max_tokens=500,
     )
     response_text = response.choices[0].message.content

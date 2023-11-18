@@ -12,29 +12,24 @@ app = FastAPI()
 
 
 @app.post("/ruskin")
-async def create_upload_file(file: UploadFile = File(...)):
-    if file.content_type and file.content_type.startswith("image/"):
-        # Process the image file
-        try:
-            contents = await file.read()
+async def create_upload_file(base64Image: str):
+    # Process the image file
+    try:
+        gpt_analysis = generate_analysis_prompt(base64_image=base64Image)
 
-            gpt_analysis = generate_analysis_prompt(base64_image=contents.decode())
+        if gpt_analysis is None:
+            raise HTTPException(status_code=500, detail="GPT-4 returned no text")
 
-            if gpt_analysis is None:
-                raise HTTPException(status_code=500, detail="GPT-4 returned no text")
+        audio = generate(
+            text=gpt_analysis,
+            voice=os.getenv("VOICE_ID"),
+            model="eleven_turbo_v2",
+        )
 
-            audio = generate(
-                text=gpt_analysis,
-                voice=os.getenv("VOICE_ID"),
-                model="eleven_turbo_v2",
-            )
-
-            # Create a response stream
-            return StreamingResponse(io.BytesIO(audio), media_type="audio/mpeg")
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e))
-    else:
-        raise HTTPException(status_code=400, detail="Invalid file type")
+        # Create a response stream
+        return StreamingResponse(io.BytesIO(audio), media_type="audio/mpeg")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 if __name__ == "__main__":
