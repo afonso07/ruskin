@@ -1,8 +1,10 @@
+import os
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import StreamingResponse
 import base64
 import io
 import uvicorn
+from elevenlabs import generate  # type: ignore
 
 from .gpt_functions import generate_analysis_prompt
 
@@ -14,12 +16,14 @@ async def create_upload_file(file: UploadFile = File(...)):
     if file.content_type and file.content_type.startswith("image/"):
         # Process the image file
         try:
-            # Convert base64 to image data here
             contents = await file.read()
 
-            # gpt_analysis = generate_analysis_prompt()
+            gpt_analysis = generate_analysis_prompt(base64_image=contents.decode())
 
-            image_data = base64.b64decode(contents)
+            if gpt_analysis is None:
+                raise HTTPException(status_code=500, detail="GPT-4 returned no text")
+
+          
 
             # TODO: Perform any desired image processing
             # ...
