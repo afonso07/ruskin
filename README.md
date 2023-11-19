@@ -16,3 +16,6 @@ Then you can start the server by running:
 
 And the frontend with:
 - `npm run dev`
+
+## Disclamer
+This project is for educational purposes only. I do not intend to commercialize this initiative, and the generated voice has not been shared. It's essential to clarify that this project has not been approved by David Attenborough. The focus is on exploring the intersection of technology and art appreciation while respecting ethical considerations. 
