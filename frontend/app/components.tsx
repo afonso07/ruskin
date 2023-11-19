@@ -218,7 +218,7 @@ export const Canvas = () => {
           </div>
         ) : (
           <div className="w-full w-2/5 xl:w-2/3 items-center mt-20 flex text-base  flex-col gap-10">
-            <div>{analysisText}</div>
+            <div className="p-4">{analysisText}</div>
             {audioURL && <ReactAudioPlayer src={audioURL} autoPlay controls />}
           </div>
         )}
