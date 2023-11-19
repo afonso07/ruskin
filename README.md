@@ -2,8 +2,7 @@
 
 Introducing ruskin: Your personal art critic powered by the new OpenAI Vision API! 🎨✨ Watch as GPT-4 analyzes your chosen masterpiece, while ElevenLabs narrates the artistic journey. Inspired by John Ruskin, ruskin serves as an art co-pilot, bridging the gap between AI tools and human creativity. It enhances, not replaces, the artist's vision.
 
-
-https://github.com/afonso07/ruskin/assets/15581078/2e683bdb-7be2-4b26-b427-2bfb59454505
+<video src="https://github.com/afonso07/ruskin/assets/15581078/2e683bdb-7be2-4b26-b427-2bfb59454505" />
 <img width="1778" alt="Screenshot 2023-11-19 at 01 22 31" src="https://github.com/afonso07/ruskin/assets/15581078/f1399bea-42c5-4092-9e09-f78639b89199">
 
 
