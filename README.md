@@ -1,6 +1,6 @@
 # ruskin. An Art Copilot
 
-Introducing ruskin: Your personal art critic powered by the new OpenAI Vision API! 🎨✨ Watch as GPT-4 analyzes your chosen masterpiece, while ElevenLabs narrates the artistic journey. Inspired by John Ruskin, ruskin serves as an art co-pilot, bridging the gap between AI tools and human creativity. It enhances, not replaces, the artist's vision.
+Introducing ruskin: Your personal art critic powered by the new OpenAI Vision API! 🎨✨ Watch as GPT-4 analyzes your chosen masterpiece, while David Attenborough narrates the artistic journey. Inspired by John Ruskin, ruskin serves as an art co-pilot, bridging the gap between AI tools and human creativity. It enhances, not replaces, the artist's vision.
 
 
 <img width="1778" alt="Screenshot 2023-11-19 at 01 22 31" src="https://github.com/afonso07/ruskin/assets/15581078/f1399bea-42c5-4092-9e09-f78639b89199">
