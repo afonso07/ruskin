@@ -17,7 +17,7 @@ export VOICE_ID=<ID>
 Then you can start the server by running:
 - `cd backend`
 - `poetry install`
-- `poetry run python -m backend.server.server`
+- `poetry run python -m server.server`
 
 And the frontend with:
 - `cd frontend`
