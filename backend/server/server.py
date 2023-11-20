@@ -34,7 +34,6 @@ def create_upload_file(inputData: InputData):
         gpt_analysis = generate_analysis_prompt(imageURI=inputData.imageURI)
 
         if gpt_analysis is None:
-            print("IM IN HERE")
             raise HTTPException(status_code=500, detail="GPT-4 returned no text")
 
 
@@ -59,8 +58,6 @@ def create_upload_file(inputData: InputData):
             },
         )
     except Exception as e:
-        print("IM IN HERE 2")
-        print(e)
         raise HTTPException(status_code=500, detail=str(e))
 
 
